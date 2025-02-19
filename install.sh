@@ -1,16 +1,12 @@
 #!/bin/bash
 
 # Flags to determine if the arguments were passed
-cp_hist_flag=false
 noninteractive_flag=false
 
 # Loop through all arguments
 for arg in "$@"
 do
     case $arg in
-        --cp-hist|-c)
-            cp_hist_flag=true
-            ;;
         --non-interactive|-n)
             noninteractive_flag=true
             ;;
@@ -31,7 +27,6 @@ else
 fi
 
 # INSTALL FONTS
-
 echo -e "Installing Nerd Fonts version of Hack, Roboto Mono, DejaVu Sans Mono\n"
 
 wget -q --show-progress -N https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/Hack/Regular/HackNerdFont-Regular.ttf -P ~/.fonts/
@@ -48,9 +43,10 @@ echo -e "Installing oh-my-zsh\n"
 if [ -d ~/.oh-my-zsh ]; then
     echo -e "oh-my-zsh in already installed at '~/.oh-my-zsh'."
 else
-    sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+    RUNZSH=no sh -c "$(wget -O- https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 fi
 
+echo -e "Copy .zshrc\n"
 cp -f .zshrc ~/
 
 mkdir -p ~/.cache/zsh/                # this will be used to store .zcompdump zsh completion cache files which normally clutter $HOME
@@ -59,6 +55,9 @@ mkdir -p ~/.fonts                     # Create .fonts if doesn't exist
 if [ -f ~/.zcompdump ]; then
     mv ~/.zcompdump* ~/.cache/zsh/
 fi
+
+# INSTALL CUSTOM PLUGINS
+echo -e "Install custom plugins\n"
 
 if [ -d ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions ]; then
     cd ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions && git pull
@@ -94,23 +93,6 @@ if [ -d ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/k ]; then
     cd ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/k && git pull
 else
     git clone --depth 1 https://github.com/supercrabtree/k ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/k
-fi
-
-if [ "$cp_hist_flag" = true ]; then
-    echo -e "\nCopying bash_history to zsh_history\n"
-    if command -v python &>/dev/null; then
-        wget -q --show-progress https://gist.githubusercontent.com/muendelezaji/c14722ab66b505a49861b8a74e52b274/raw/49f0fb7f661bdf794742257f58950d209dd6cb62/bash-to-zsh-hist.py
-        cat ~/.bash_history | python bash-to-zsh-hist.py >> ~/.zsh_history
-    else
-        if command -v python3 &>/dev/null; then
-            wget -q --show-progress https://gist.githubusercontent.com/muendelezaji/c14722ab66b505a49861b8a74e52b274/raw/49f0fb7f661bdf794742257f58950d209dd6cb62/bash-to-zsh-hist.py
-            cat ~/.bash_history | python3 bash-to-zsh-hist.py >> ~/.zsh_history
-        else
-            echo "Python is not installed, can't copy bash_history to zsh_history\n"
-        fi
-    fi
-else
-    echo -e "\nNot copying bash_history to zsh_history, as --cp-hist or -c is not supplied\n"
 fi
 
 if [ "$noninteractive_flag" = true ]; then
