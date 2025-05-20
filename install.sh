@@ -96,10 +96,11 @@ else
 fi
 
 # Install cht.sh
-
-if [ ! -f /usr/local/bin/cht.sh ]; then
-    curl https://cht.sh/:cht.sh > "$HOME/bin/cht.sh"
-    chmod +x $HOME/bin/cht.sh
+PATH_DIR="$HOME/bin"
+mkdir -p "$PATH_DIR"
+if [ ! -f $PATH_DIR/cht.sh ]; then
+    curl https://cht.sh/:cht.sh > "$PATH_DIR/cht.sh"
+    chmod +x "$PATH_DIR/cht.sh"
 fi
 
 if [ "$noninteractive_flag" = true ]; then

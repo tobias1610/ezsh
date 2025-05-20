@@ -93,8 +93,6 @@ plugins=(
   zsh-syntax-highlighting)
 # Plugin zsh-completions
 fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
-# cht.sh completion
-fpath+=~/.zsh.d/
 autoload -U compinit && compinit
 
 # Now source oh-my-zsh.sh so that any plugins added in ~/.config/ezsh/zshrc/* files also get loaded
