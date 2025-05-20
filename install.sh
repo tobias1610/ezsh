@@ -16,13 +16,13 @@ do
     esac
 done
 
-if command -v zsh &> /dev/null && command -v git &> /dev/null && command -v wget &> /dev/null; then
-    echo -e "ZSH and Git are already installed\n"
+if command -v zsh &> /dev/null && command -v git &> /dev/null && command -v wget &> /dev/null && command -v fzf &> /dev/null && command -v rlwrap &> /dev/null; then
+    echo -e "zsh git wget fzf rlwrap are already installed\n"
 else
-    if sudo apt install -y zsh git wget autoconf fzf || sudo pacman -S zsh git wget fzf || sudo dnf install -y zsh git wget fzf || sudo yum install -y zsh git wget fzf || sudo brew install git zsh wget fzf || pkg install git zsh wget fzf; then
-        echo -e "zsh wget git and fzf Installed\n"
+    if sudo apt install -y zsh git wget autoconf fzf rlwrap xsel || sudo pacman -S zsh git wget fzf rlwrap xsel || sudo dnf install -y zsh git wget fzf rlwrap xsel || sudo yum install -y zsh git wget fzf rlwrap xsel || sudo brew install git zsh wget fzf rlwrap xsel || pkg install git zsh wget fzf rlwrap xsel; then
+        echo -e "zsh git wget autoconf fzf rlwrap xsel Installed\n"
     else
-        echo -e "Please install the following packages first, then try again: zsh git wget \n" && exit
+        echo -e "Please install the following packages first, then try again: zsh git wget autoconf fzf rlwrap xsel \n" && exit
     fi
 fi
 
@@ -98,8 +98,8 @@ fi
 # Install cht.sh
 
 if [ ! -f /usr/local/bin/cht.sh ]; then
-    curl -s https://cht.sh/:cht.sh | sudo tee /usr/local/bin/cht.sh && sudo chmod +x /usr/local/bin/cht.sh
-    curl https://cheat.sh/:zsh > ~/.zsh.d/_cht
+    curl https://cht.sh/:cht.sh > "$HOME/bin/cht.sh"
+    chmod +x $HOME/bin/cht.sh
 fi
 
 if [ "$noninteractive_flag" = true ]; then
