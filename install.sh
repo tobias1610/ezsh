@@ -19,8 +19,8 @@ done
 if command -v zsh &> /dev/null && command -v git &> /dev/null && command -v wget &> /dev/null; then
     echo -e "ZSH and Git are already installed\n"
 else
-    if sudo apt install -y zsh git wget autoconf || sudo pacman -S zsh git wget || sudo dnf install -y zsh git wget || sudo yum install -y zsh git wget || sudo brew install git zsh wget || pkg install git zsh wget ; then
-        echo -e "zsh wget and git Installed\n"
+    if sudo apt install -y zsh git wget autoconf fzf || sudo pacman -S zsh git wget fzf || sudo dnf install -y zsh git wget fzf || sudo yum install -y zsh git wget fzf || sudo brew install git zsh wget fzf || pkg install git zsh wget fzf; then
+        echo -e "zsh wget git and fzf Installed\n"
     else
         echo -e "Please install the following packages first, then try again: zsh git wget \n" && exit
     fi
@@ -93,6 +93,13 @@ if [ -d ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/k ]; then
     cd ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/k && git pull
 else
     git clone --depth 1 https://github.com/supercrabtree/k ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/k
+fi
+
+# Install cht.sh
+
+if [ ! -f /usr/local/bin/cht.sh ]; then
+    curl -s https://cht.sh/:cht.sh | sudo tee /usr/local/bin/cht.sh && sudo chmod +x /usr/local/bin/cht.sh
+    curl https://cheat.sh/:zsh > ~/.zsh.d/_cht
 fi
 
 if [ "$noninteractive_flag" = true ]; then

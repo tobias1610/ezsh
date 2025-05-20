@@ -87,21 +87,23 @@ plugins=(
   k
   z
   alias-tips
+  zsh-interactive-cd
   zsh-autosuggestions
   zsh-history-substring-search
   zsh-syntax-highlighting)
 # Plugin zsh-completions
 fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
+# cht.sh completion
+fpath+=~/.zsh.d/
+autoload -U compinit && compinit
 
 # Now source oh-my-zsh.sh so that any plugins added in ~/.config/ezsh/zshrc/* files also get loaded
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
-# export MANPATH="/usr/local/man:$MANPATH"
-
 # You may need to manually set your language environment
-# export LANG=en_US.UTF-8
+export LANG=en_US.UTF-8
 
 # Print a greeting message when shell is started
 echo $USER@$HOST  $(uname -srm) $(lsb_release -rcs)
@@ -110,10 +112,6 @@ echo $USER@$HOST  $(uname -srm) $(lsb_release -rcs)
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
 alias cp="cp -i"
 alias k="k -h"
 alias df='df -h'
@@ -131,25 +129,18 @@ alias myip="wget -qO- https://wtfismyip.com/text"
 alias a='eza -la --git --colour-scale all -g --smart-group --icons always'
 alias aa='eza -la --git --colour-scale all -g --smart-group --icons always -s modified -r'
 
+alias cheat='cht.sh'
+
 # Add to PATH to run programs installed with pipx or "pip install --user"
 export PATH=$PATH:~/.local/bin
 
 # Remove duplicates
 export PATH=$(echo -n $PATH | awk -v RS=: '!($0 in a) {a[$0]; printf("%s%s", length(a) > 1 ? ":" : "", $0)}')
 
-# CUSTOM FUNCTIONS
+# FZF Config
+export FZF_DEFAULT_OPTS="--color=dark --no-sort"
 
-# cheat sheets (github.com/chubin/cheat.sh), find out how to use commands
-# example 'cheat tar'
-# for language specific question supply 2 args first for language, second as the question
-# eample: cheat python3 execute external program
-cheat() {
-    if [ "$2" ]; then
-        curl "https://cheat.sh/$1/$2+$3+$4+$5+$6+$7+$8+$9+$10"
-    else
-        curl "https://cheat.sh/$1"
-    fi
-}
+# CUSTOM FUNCTIONS
 
 speedtest() {
     curl -s https://raw.githubusercontent.com/sivel/speedtest-cli/master/speedtest.py | python3 -
@@ -158,4 +149,3 @@ speedtest() {
 dadjoke() {
     curl https://icanhazdadjoke.com
 }
-
